@@ -45,12 +45,13 @@ ORDER-EXECUTION-AND-MANAGEMENT
 │   │   ├── api_config.h        // Configuration for API keys and settings  
 │   │  
 │   ├── models/  
-│       ├── orderbook.h         // Orderbook data model  
-│       ├── orders.h            // Order details and handling  
-│       ├── position.h          // Model for tracking positions  
-│  
-├── main.cpp                    // Main entry point of the application  
-├── main.exe                    // Compiled executable  
+│   │   ├── orderbook.h         // Orderbook data model  
+│   │   ├── orders.h            // Order details and handling  
+│   │   ├── position.h          // Model for tracking positions  
+│   │
+│   ├──main.cpp                 // Main entry point of the application 
+│   ├──main.exe                 // Compiled executable  
+│                  
 ├── main                        // Other output artifacts  
 ```
 ## Setup Instructions
