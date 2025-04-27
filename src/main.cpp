@@ -1,10 +1,20 @@
 #include <iostream>
+#include <chrono>
 #include "api/deribit_api.h"
 #include "config/api_config.h"
 #include <string>
 #include <cctype>
 
+// Utility function to log execution time
+void logExecutionTime(const std::string& action, std::chrono::steady_clock::time_point start) {
+    auto end = std::chrono::steady_clock::now();
+    std::chrono::duration<double> duration = end - start;
+    std::cout << action << " took " << duration.count() << " seconds.\n";
+}
+
 void placeOrder(DeribitAPI& api) {
+    auto start = std::chrono::steady_clock::now();  // Start timing
+
     std::string symbol, type, trigger;
     double price;
     int quantity;
@@ -19,29 +29,31 @@ void placeOrder(DeribitAPI& api) {
     std::cin >> quantity;
     std::cout << "Enter type : ";
     std::cin >> type;
-    
-    // if(type == "limit" or type == "stop_limit") {
-        std::cout << "Enter price: ";
-        std::cin >> price;
-    // }
-    
-    if(buyOrSell == 's' or type == "stop_limit" or type == "stop_market" or type =="take_limit" or type == "take_market" or type == "trailing_market") {
+
+    std::cout << "Enter price: ";
+    std::cin >> price;
+
+    if(buyOrSell == 's' || type == "stop_limit" || type == "stop_market" || type == "take_limit" || type == "take_market" || type == "trailing_market") {
         std::cout << "Enter trigger price: ";
         std::cin >> trigger_price;
         std::cout << "Enter trigger(last_price/index_price/mark_price): ";
         std::cin >> trigger;
     }
-    
 
     for(auto &c: symbol) c = toupper(c);
     Order order(symbol, price, quantity, trigger_price, buyOrSell, trigger, type);
     if (api.placeOrder(order)) {
+        std::cout << "Order placed successfully.\n";
     } else {
         std::cout << "Failed to place order.\n";
     }
+
+    logExecutionTime("Place Order", start);  // Log execution time
 }
 
 void cancelOrder(DeribitAPI& api) {
+    auto start = std::chrono::steady_clock::now();  // Start timing
+
     std::string orderId;
     std::cout << "Enter Order ID to cancel: ";
     std::cin >> orderId;
@@ -51,9 +63,13 @@ void cancelOrder(DeribitAPI& api) {
     } else {
         std::cout << "Failed to cancel order.\n";
     }
+
+    logExecutionTime("Cancel Order", start);  // Log execution time
 }
 
 void modifyOrder(DeribitAPI& api) {
+    auto start = std::chrono::steady_clock::now();  // Start timing
+
     std::string orderId;
     double newPrice;
     int newQuantity;
@@ -70,9 +86,13 @@ void modifyOrder(DeribitAPI& api) {
     } else {
         std::cout << "Failed to modify order.\n";
     }
+
+    logExecutionTime("Modify Order", start);  // Log execution time
 }
 
 void getOrderbook(DeribitAPI& api) {
+    auto start = std::chrono::steady_clock::now();  // Start timing
+
     std::string symbol;
     std::cout << "Enter symbol (e.g., BTC-PERPETUAL): ";
     std::cin >> symbol;
@@ -80,7 +100,7 @@ void getOrderbook(DeribitAPI& api) {
     for(auto &c: symbol) c = toupper(c);
     Orderbook orderbook = api.getOrderbook(symbol);
     std::cout << "Orderbook for " << symbol << ":\n";
-    
+
     std::cout << "-----------------------------------" << std::endl;
     for (const auto& bid : orderbook.bids) {
         std::cout << "Bid: Price=   " << bid.price << ",    Quantity=  " << bid.quantity << "\n";
@@ -90,10 +110,13 @@ void getOrderbook(DeribitAPI& api) {
         std::cout << "Ask: Price=   " << ask.price << ",    Quantity=  " << ask.quantity << "\n";
     }
     std::cout << "-----------------------------------" << std::endl;
-    
+
+    logExecutionTime("Get Orderbook", start);  // Log execution time
 }
 
 void viewPosition(DeribitAPI& api) {
+    auto start = std::chrono::steady_clock::now();  // Start timing
+
     std::string symbol;
     std::cout << "Enter symbol (e.g., BTC-PERPETUAL): ";
     std::cin >> symbol;
@@ -103,10 +126,16 @@ void viewPosition(DeribitAPI& api) {
     std::cout << "Position for " << symbol << ":\n";
     std::cout << "Size: " << position.quantity << "\n";
     std::cout << "Average Price: " << position.currentPrice << "\n";
+
+    logExecutionTime("View Position", start);  // Log execution time
 }
 
 void viewOpenOrders(DeribitAPI& api) {
+    auto start = std::chrono::steady_clock::now();  // Start timing
+
     api.getOpenOrders();
+
+    logExecutionTime("View Open Orders", start);  // Log execution time
 }
 
 int main() {
@@ -153,4 +182,3 @@ int main() {
         }
     }
 }
-
