@@ -1,6 +1,4 @@
-
----
-
+```markdown
 # Order Execution and Management System for Deribit Test
 
 ## Objective
@@ -19,9 +17,10 @@ A high-performance C++ system for order execution and management on the Deribit 
 
 ### Real-Time Market Data
 - **WebSocket Integration**:
-  - Real-time streaming of market data.
-  - WebSocket server for client subscriptions to symbols.
-  - Continuous orderbook updates for subscribed symbols.
+  - Real-time streaming of market data from Deribit Testnet (client-side connection).
+  - **[In Progress]** WebSocket server implementation for client subscriptions:
+    - Basic server code has been added (connection handling).
+    - Full support for client subscriptions and broadcasting updates is under development.
 
 ### Market Coverage
 - **Instruments**: Spot, Futures, and Options.
@@ -57,6 +56,10 @@ ORDER-EXECUTION-AND-MANAGEMENT
 │   │   ├── orderbook.h         // Orderbook data model  
 │   │   ├── orders.h            // Order details and handling  
 │   │   ├── position.h          // Model for tracking positions  
+│   │
+│   ├── websocket/  
+│   │   ├── websocket_server.cpp // [In Progress] WebSocket server implementation  
+│   │   ├── websocket_server.h   // Header file for server handling
 │   │
 │   ├── main.cpp                // Main entry point of the application 
 │   ├── main.exe                // Compiled executable  
@@ -131,7 +134,7 @@ The system provides the following order management operations:
 
 ---
 
-## 📈 Performance Analysis
+## Performance Analysis
 
 ### Benchmarking Methodology
 - Latency was measured internally by recording timestamps before and after each major API call.
@@ -163,4 +166,9 @@ The system provides the following order management operations:
 - **WebSocket Streaming**: Shift to using WebSocket feeds for faster orderbook updates.
 - **Multithreading**: Handle API calls and WebSocket messages on separate threads to reduce blocking.
 - **Efficient Data Structures**: Further optimize in-memory handling of market data for faster access.
+
+---
+
+```
+
 
