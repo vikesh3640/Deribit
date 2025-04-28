@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string_view>
 
-struct UserData {};  // Define an empty struct for UserData
+struct UserData {}; 
 
 void runWebSocketServer() {
     std::cout << "Starting WebSocket server on port 9001..." << std::endl;
@@ -13,7 +13,7 @@ void runWebSocketServer() {
         },
         .message = [](auto* ws, std::string_view message, uWS::OpCode opCode) {
             std::cout << "Received message: " << message << std::endl;
-            ws->send(message, opCode);  // Echo the message back to the client
+            ws->send(message, opCode); 
         },
         .close = [](auto* ws, int code, std::string_view message) {
             std::cout << "A client disconnected!" << std::endl;
